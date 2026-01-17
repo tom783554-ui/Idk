@@ -34,50 +34,56 @@
       main {
         flex: 1;
         display: grid;
-        grid-template-columns: 240px 1fr;
+        grid-template-columns: minmax(320px, 1.4fr) minmax(300px, 1fr);
         gap: 16px;
         padding: 16px 24px 24px;
       }
 
-      .controls {
+      .panel {
         background: #111827;
         border: 1px solid #1f2937;
         border-radius: 12px;
         padding: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
       }
 
-      .controls button {
+      .panel h2 {
+        margin: 0 0 12px;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+      }
+
+      .btn {
+        appearance: none;
         background: #1d4ed8;
         color: #f8fafc;
         border: none;
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 14px;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 15px;
+        font-weight: 600;
         cursor: pointer;
-        transition: background 0.2s ease;
+        transition: background 0.2s ease, transform 0.2s ease;
+        min-height: 44px;
       }
 
-      .controls button:hover {
-        background: #2563eb;
+      .btn:active {
+        transform: scale(0.98);
       }
 
-      .controls button.secondary {
+      .btn.secondary {
         background: #0f766e;
       }
 
-      .controls button.secondary:hover {
-        background: #0d9488;
-      }
-
-      .controls button.tertiary {
+      .btn.tertiary {
         background: #7c3aed;
       }
 
-      .controls button.tertiary:hover {
-        background: #8b5cf6;
+      .btn.light {
+        background: #1f2937;
+        color: #e2e8f0;
+        border: 1px solid #334155;
       }
 
       .canvas-panel {
@@ -106,8 +112,137 @@
         color: #cbd5f5;
       }
 
+      .ui-root {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px;
+      }
+
+      .control-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .field {
+        background: #0f172a;
+        border: 1px solid #1f2937;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .field span {
+        display: block;
+        font-size: 12px;
+        color: #94a3b8;
+        margin-bottom: 6px;
+      }
+
+      .field strong {
+        font-size: 18px;
+      }
+
+      .waveform {
+        width: 100%;
+        height: 120px;
+        background: #0f172a;
+        border-radius: 10px;
+      }
+
+      .log-panel {
+        max-height: 220px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-right: 4px;
+      }
+
+      .log-line {
+        font-size: 12px;
+        color: #cbd5f5;
+        line-height: 1.4;
+      }
+
+      .log-line strong {
+        color: #38bdf8;
+        margin-right: 6px;
+      }
+
+      .status-line {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      select,
+      input[type="checkbox"] {
+        accent-color: #38bdf8;
+      }
+
+      .select {
+        background: #0f172a;
+        color: #e2e8f0;
+        border: 1px solid #1f2937;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+        min-height: 44px;
+      }
+
+      .toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #e2e8f0;
+      }
+
+      .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+      }
+
       @media (max-width: 900px) {
         main {
+          grid-template-columns: 1fr;
+        }
+
+        .field-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 600px) {
+        body {
+          font-size: 15px;
+        }
+
+        header {
+          padding: 12px 16px;
+        }
+
+        main {
+          padding: 12px 16px 20px;
+        }
+
+        .btn {
+          font-size: 16px;
+        }
+
+        .field-row {
           grid-template-columns: 1fr;
         }
       }
@@ -118,18 +253,13 @@
       <h1>ICU-Sim-v1</h1>
     </header>
     <main>
-      <section class="controls" aria-label="Simulation controls">
-        <strong>Controls</strong>
-        <button id="resetCamera">Reset Camera</button>
-        <button id="toggleLight" class="secondary">Toggle Light</button>
-        <button id="randomizeColor" class="tertiary">Randomize Color</button>
-      </section>
       <section class="canvas-panel">
         <canvas id="renderCanvas"></canvas>
         <div class="status" id="status">Initializing scene…</div>
       </section>
+      <section id="ui-root" class="ui-root" aria-label="Simulation controls"></section>
     </main>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <script src="./src/app.js"></script>
+    <script type="module" src="./src/app.js"></script>
   </body>
 </html>

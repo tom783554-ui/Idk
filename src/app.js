@@ -1,9 +1,9 @@
+import { UI } from "./ui.js";
+
 (() => {
   const canvas = document.getElementById("renderCanvas");
   const status = document.getElementById("status");
-  const resetCameraButton = document.getElementById("resetCamera");
-  const toggleLightButton = document.getElementById("toggleLight");
-  const randomizeColorButton = document.getElementById("randomizeColor");
+  const uiRoot = document.getElementById("ui-root");
 
   if (!canvas || !status) {
     return;
@@ -78,26 +78,53 @@
     )} | Light: ${light.intensity.toFixed(1)}`;
   };
 
-  infoText();
-
-  resetCameraButton?.addEventListener("click", () => {
+  const resetCamera = () => {
     camera.setPosition(new BABYLON.Vector3(6, 6, 6));
     camera.setTarget(new BABYLON.Vector3(0, 1, 0));
     infoText();
-  });
+  };
 
-  toggleLightButton?.addEventListener("click", () => {
+  const toggleLight = () => {
     light.intensity = light.intensity > 0 ? 0 : 0.9;
     infoText();
-  });
+  };
 
-  randomizeColorButton?.addEventListener("click", () => {
+  const randomizeColor = () => {
     boxMaterial.diffuseColor = new BABYLON.Color3(
       Math.random() * 0.7 + 0.2,
       Math.random() * 0.7 + 0.2,
       Math.random() * 0.7 + 0.2
     );
+  };
+
+  infoText();
+
+  const ui = uiRoot ? new UI(uiRoot) : null;
+  ui?.init({
+    onStart: () => ui.log("Start clicked", "action"),
+    onPause: () => ui.log("Pause clicked", "action"),
+    onReset: () => ui.log("Reset clicked", "action"),
+    onSpeed: (value) => ui.log(`Speed set to ${value}`, "info"),
+    onSound: (enabled) =>
+      ui.log(`Sound ${enabled ? "enabled" : "muted"}`, "info"),
+    onScenarioSelect: (scenario) =>
+      ui.log(`Scenario selected: ${scenario}`, "info"),
+    onOrder: (orderId) => ui.setStatus(`Order queued: ${orderId}`),
+    onLogRequest: () => ui.log("Log requested", "info"),
+    on3D: (actionId) => {
+      if (actionId === "reset_camera") {
+        resetCamera();
+      }
+      if (actionId === "toggle_light") {
+        toggleLight();
+      }
+      if (actionId === "randomize_color") {
+        randomizeColor();
+      }
+    },
   });
+
+  ui?.log("UI ready", "info");
 
   engine.runRenderLoop(() => {
     scene.render();
