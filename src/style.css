@@ -1,25 +1,109 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #111827;
-  background-color: #ffffff;
+  background-color: #f3f4f6;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
-  min-height: 100vh;
+  background: #f3f4f6;
+  overflow: hidden;
 }
 
 #app {
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
+}
+
+#viewer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#renderCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  background: #e5e7eb;
+}
+
+#hotspot-panel {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  max-width: 320px;
+  width: calc(100% - 2.5rem);
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 12px;
+  padding: 0.9rem 1rem 1rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  pointer-events: none;
+}
+
+#hotspot-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#hotspot-panel.is-error {
+  border: 1px solid #f87171;
+}
+
+#hotspot-panel header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+#hotspot-panel h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+#hotspot-panel p {
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+#panel-close {
+  border: none;
+  background: #e2e8f0;
+  color: #0f172a;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#debug-stats {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-size: 0.75rem;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  pointer-events: none;
 }
